@@ -29,47 +29,8 @@ struct LC3VM: AsyncParsableCommand {
         // Disable input buffering
         disable_input_buffering()
 
-        // Start the LC-3 machine
-        hardware.isRunning = true
-
-        while hardware.isRunning {
-            let instruction = hardware.readNextInstruction()
-
-            switch try instruction.opcode {
-            case .br:
-                try BR.execute(instruction)
-            case .add:
-                try ADD.execute(instruction)
-            case .ld:
-                try LD.execute(instruction)
-            case .st:
-                try ST.execute(instruction)
-            case .jsr:
-                try JSR.execute(instruction)
-            case .and:
-                try AND.execute(instruction)
-            case .ldr:
-                try LDR.execute(instruction)
-            case .str:
-                try STR.execute(instruction)
-            case .rti:
-                try RTI.execute(instruction)
-            case .not:
-                try NOT.execute(instruction)
-            case .ldi:
-                try LDI.execute(instruction)
-            case .sti:
-                try STI.execute(instruction)
-            case .jmp:
-                try JMP.execute(instruction)
-            case .res:
-                try RES.execute(instruction)
-            case .lea:
-                try LEA.execute(instruction)
-            case .trap:
-                try TRAP.execute(instruction)
-            }
-        }
+        // Run the LC-3 machine
+        try hardware.run()
 
         // Restore input buffering
         restore_input_buffering()
