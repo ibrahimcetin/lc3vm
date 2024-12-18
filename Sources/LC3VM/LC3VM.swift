@@ -18,16 +18,16 @@ struct LC3VM: AsyncParsableCommand {
     var binary: URL
 
     func run() async throws {
+        // Set up the signal handler
+        signal(SIGINT) { handle_interrupt($0) }
+        // Disable input buffering
+        disable_input_buffering()
+
         // Create the LC-3 hardware
         let hardware = Hardware()
 
         // Read the binary file and load it into memory
         try hardware.readImage(binary)
-
-        // Set up the signal handler
-        signal(SIGINT) { handle_interrupt($0) }
-        // Disable input buffering
-        disable_input_buffering()
 
         // Run the LC-3 machine
         try hardware.run()
